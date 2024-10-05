@@ -1,0 +1,13 @@
+yarn add v1.22.22
+info No lockfile found.
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 1 new dependency.
+info Direct dependencies
+└─ @openzeppelin/contracts@5.0.2
+info All dependencies
+└─ @openzeppelin/contracts@5.0.2
+Done in 1.44s.
