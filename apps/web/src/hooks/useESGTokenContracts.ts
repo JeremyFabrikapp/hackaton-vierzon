@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import HybridESGMultiTokenABI from '../abi/HybridESGMultiToken.json'; // Ensure this ABI file exists
+import HybridESGMultiTokenABI from '../artifacts/core/artifacts/contracts/HybridESGMultiToken.sol/HybridESGMultiToken.json'; // Ensure this ABI file exists
 
 const contractAddress = '0x...'; // Replace with the actual deployed contract address
 
@@ -13,8 +13,8 @@ export function useESGTokenContracts() {
         try {
           await window.ethereum.request({ method: 'eth_requestAccounts' });
           const provider = new ethers.WebSocketProvider(window.ethereum);
-          const signer = provider.getSigner();
-          const esgContract = new ethers.Contract(contractAddress, HybridESGMultiTokenABI, signer);
+          const signer = await provider.getSigner();
+          const esgContract = new ethers.Contract(contractAddress, HybridESGMultiTokenABI.abi, signer);
           setContract(esgContract);
         } catch (error) {
           console.error('Failed to initialize contract:', error);
