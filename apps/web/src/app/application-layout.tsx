@@ -41,6 +41,7 @@ import {
   Square2StackIcon,
   TicketIcon,
 } from '@heroicons/react/20/solid'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { usePathname } from 'next/navigation'
 
 function AccountDropdownMenu({ anchor }: { anchor: 'top start' | 'bottom end' }) {
@@ -102,6 +103,7 @@ export function ApplicationLayout({
                 <ChevronDownIcon />
               </DropdownButton>
               <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
+                
                 <DropdownItem href="/settings">
                   <Cog8ToothIcon />
                   <DropdownLabel>Settings</DropdownLabel>
@@ -142,6 +144,10 @@ export function ApplicationLayout({
                 <Cog6ToothIcon />
                 <SidebarLabel>Settings</SidebarLabel>
               </SidebarItem>
+              <SidebarItem href="/inventory" current={pathname.startsWith('/inventory')}>
+                <Cog6ToothIcon />
+                <SidebarLabel>Inventory</SidebarLabel>
+              </SidebarItem>
             </SidebarSection>
 
             <SidebarSection className="max-lg:hidden">
@@ -154,7 +160,6 @@ export function ApplicationLayout({
             </SidebarSection>
 
             <SidebarSpacer />
-
             <SidebarSection>
               <SidebarItem href="#">
                 <QuestionMarkCircleIcon />
@@ -187,7 +192,23 @@ export function ApplicationLayout({
         </Sidebar>
       }
     >
-      {children}
+      <div className="flex flex-col min-h-screen">
+        <header className="bg-zinc-100 dark:bg-zinc-800 shadow-sm rounded-md">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-end items-center">
+            <ConnectButton />
+          </div>
+        </header>
+        <main className="flex-grow">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {children}
+          </div>
+        </main>
+        <footer className="bg-white dark:bg-zinc-800 border-t border-zinc-200 dark:border-zinc-700">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-sm text-zinc-500 dark:text-zinc-400">
+            © 2024 Catalyst. All rights reserved.
+          </div>
+        </footer>
+      </div>
     </SidebarLayout>
   )
 }

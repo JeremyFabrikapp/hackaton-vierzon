@@ -96,7 +96,7 @@ export default function Inventory() {
             </>
           )}
           <div className="flex justify-end space-x-2">
-            <Button onClick={closeModal} variant="secondary">
+            <Button onClick={closeModal}>
               Cancel
             </Button>
             <Button type="submit">Add Resource</Button>

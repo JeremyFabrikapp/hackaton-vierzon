@@ -1,4 +1,5 @@
 import { getEvents } from '@/data'
+import RainbowWalletProviders from '@/providers/rainbow-wallet/provider'
 import '@/styles/tailwind.css'
 import type { Metadata } from 'next'
 import type React from 'react'
@@ -25,7 +26,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </head>
       <body>
-        <ApplicationLayout events={events}>{children}</ApplicationLayout>
+        <RainbowWalletProviders>
+          <ApplicationLayout events={events}>{children}</ApplicationLayout>
+        </RainbowWalletProviders>
       </body>
     </html>
   )
