@@ -34,9 +34,12 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/16/solid'
 import {
+  ArchiveBoxIcon,
   Cog6ToothIcon,
+  CurrencyDollarIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
+  ShoppingCartIcon,
   SparklesIcon,
   Square2StackIcon,
   TicketIcon,
@@ -145,8 +148,16 @@ export function ApplicationLayout({
                 <SidebarLabel>Settings</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/inventory" current={pathname.startsWith('/inventory')}>
-                <Cog6ToothIcon />
+                <ArchiveBoxIcon />
                 <SidebarLabel>Inventory</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/marketplace" current={pathname.startsWith('/marketplace')}>
+                <ShoppingCartIcon />
+                <SidebarLabel>Marketplace</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/bonds" current={pathname.startsWith('/bonds')}>
+                <CurrencyDollarIcon />
+                <SidebarLabel>Bonds</SidebarLabel>
               </SidebarItem>
             </SidebarSection>
 

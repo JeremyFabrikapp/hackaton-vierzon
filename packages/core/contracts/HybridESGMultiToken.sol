@@ -11,6 +11,7 @@ contract HybridESGMultiToken is ERC1155 {
     }
 
     mapping(uint256 => ESGCriteria) private _batchESGCriteria;
+    uint256[] private _batchIds;
 
     event ESGCriteriaUpdated(uint256 indexed batchId, ESGCriteria criteria);
 
@@ -18,6 +19,7 @@ contract HybridESGMultiToken is ERC1155 {
 
     function createBatch(uint256 batchId, uint256 amount, bytes memory data) public {
         _mint(msg.sender, batchId, amount, data);
+        _batchIds.push(batchId);
     }
 
     function setBatchESGCriteria(uint256 batchId, uint8 environmental, uint8 social, uint8 governance) public {
@@ -28,5 +30,9 @@ contract HybridESGMultiToken is ERC1155 {
 
     function getBatchESGCriteria(uint256 batchId) public view returns (ESGCriteria memory) {
         return _batchESGCriteria[batchId];
+    }
+
+    function getAllBatchIds() public view returns (uint256[] memory) {
+        return _batchIds;
     }
 }

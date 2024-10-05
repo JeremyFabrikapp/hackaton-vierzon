@@ -1,7 +1,21 @@
 "use client"
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { http, createConfig } from 'wagmi'
-import { localhost, mainnet, sepolia, base, baseSepolia } from 'wagmi/chains'
+import { mainnet, sepolia, base, baseSepolia } from 'wagmi/chains'
+
+const localhost = {
+  id: 31337,
+  name: 'Localhost',
+  network: 'localhost',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: { http: ['http://127.0.0.1:8545'] },
+  },
+}
 
 export const config = createConfig({
   chains: [localhost, base, baseSepolia],

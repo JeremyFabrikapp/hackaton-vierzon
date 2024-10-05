@@ -28,6 +28,7 @@ const connectors = connectorsForWallets(
   }
 );
 
+
 export default function RainbowWalletProviders({ children }: Props) {
   return (
     <WagmiProvider config={config}>
