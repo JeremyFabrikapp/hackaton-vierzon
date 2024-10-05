@@ -187,6 +187,7 @@ const config: HardhatUserConfig | any = {
   mocha: {
     timeout: 100000000,
   },
+  
   contractSizer: {
     alphaSort: true,
     disambiguatePaths: false,

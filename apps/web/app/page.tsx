@@ -20,6 +20,21 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
+        <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
+          <div className="flex-shrink-0">
+            <Image
+              className="h-12 w-12"
+              src="/tailwind-logo.svg"
+              alt="Tailwind CSS Logo"
+              width={48}
+              height={48}
+            />
+          </div>
+          <div>
+            <div className="text-xl font-medium text-black">Tailwind CSS</div>
+            <p className="text-gray-500">A utility-first CSS framework</p>
+          </div>
+        </div>
 
         <div className={styles.ctas}>
           <a
