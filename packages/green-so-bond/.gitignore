@@ -30,5 +30,5 @@ yarn-error.log*
 .env.production.local
 
 typechain/
-
+artifacts/
 test/

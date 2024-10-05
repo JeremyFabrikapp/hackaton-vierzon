@@ -3,9 +3,9 @@
 
 pragma solidity ^0.8.20;
 
-import { IGreenBondMetadata } from "./IGreenBondMetadata.sol";
-import { GreenBondMetadataInternal } from "./GreenBondMetadataInternal.sol";
-import { GreenBondMetadataStorage } from "./GreenBondMetadataStorage.sol";
+import { IGreenBondMetadata } from "./../green/IGreenBondMetadata.sol";
+import { GreenBondMetadataInternal } from "./../green/GreenBondMetadataInternal.sol";
+import { GreenBondMetadataStorage } from "./../green/GreenBondMetadataStorage.sol";
 import { SmartContractAccessManagementInternal } from "../access/SmartContractAccessManagementInternal.sol";
 import { ContextInternal } from "../../metatx/ContextInternal.sol";
 

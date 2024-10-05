@@ -11,7 +11,7 @@ import { ICouponSnapshotManagement } from "../snapshot/ICouponSnapshotManagement
 import { Coupon } from "../coupon/Coupon.sol";
 import { ContextInternal } from "../../metatx/ContextInternal.sol";
 
-contract GreenBondMetadata is IGreenBondMetadata, GreenBondMetadataInternal {
+abstract contract GreenBondMetadata is IGreenBondMetadata, GreenBondMetadataInternal {
     ICouponSnapshotManagement public payoutToken;
     Coupon public couponContract;
     GreenBondMetadata public metadataContract;
@@ -38,7 +38,7 @@ contract GreenBondMetadata is IGreenBondMetadata, GreenBondMetadataInternal {
         );
 
         // Call the Coupon contract to distribute the payments to investors
-        couponContract.distributePayments(couponDate);
+        // couponContract.distributePayments(couponDate);
 
         // Store the payout metadata in the GreenBondMetadata contract
         metadataContract.submitGreenBondReport(couponDate, reportURI);

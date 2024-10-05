@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.20;
 
-import { IGreenBondMetadataInternal } from "./IGreenBondMetadataInternal.sol";
+import { IGreenBondMetadataInternal } from "./../green/IGreenBondMetadataInternal.sol";
 
 interface IGreenBondMetadata is IGreenBondMetadataInternal {
     /**
