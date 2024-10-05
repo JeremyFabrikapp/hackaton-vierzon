@@ -16,7 +16,11 @@ describe("Marketplace", function () {
     await hybridESGMultiToken.createBatch(1, 100, "0x");
     await hybridESGMultiToken.setBatchESGCriteria(1, 80, 70, 90);
 
-    return { hybridESGMultiToken, certifiedResourceExchange, owner, seller, buyer };
+    // Deploy a mock ERC20 token for payments
+    const MockERC20 = await ethers.getContractFactory("CustomERC20");
+    const mockERC20 = await MockERC20.deploy("Mock Token", "MTK", 30000000000);
+
+    return { hybridESGMultiToken, certifiedResourceExchange, mockERC20, owner, seller, buyer };
   }
 
   describe("Resource Listing", function () {
@@ -24,9 +28,6 @@ describe("Marketplace", function () {
       const { hybridESGMultiToken, certifiedResourceExchange, seller } = await loadFixture(deployMarketplaceFixture);
 
       await hybridESGMultiToken.safeTransferFrom(await hybridESGMultiToken.getAddress(), seller.address, 1, 1, "0x");
-      
-      // Set approval for all before listing
-      await hybridESGMultiToken.connect(seller).setApprovalForAll(await certifiedResourceExchange.getAddress(), true);
       
       await expect(certifiedResourceExchange.connect(seller).listResource(100, await hybridESGMultiToken.getAddress(), 1))
         .to.emit(certifiedResourceExchange, "ResourceListed")
@@ -36,34 +37,31 @@ describe("Marketplace", function () {
 
   describe("Offer Creation", function () {
     it("Should create an offer for a listed resource", async function () {
-      const { hybridESGMultiToken, certifiedResourceExchange, seller, buyer } = await loadFixture(deployMarketplaceFixture);
+      const { hybridESGMultiToken, certifiedResourceExchange, mockERC20, seller, buyer } = await loadFixture(deployMarketplaceFixture);
 
       await hybridESGMultiToken.safeTransferFrom(await hybridESGMultiToken.getAddress(), seller.address, 1, 1, "0x");
-      await hybridESGMultiToken.connect(seller).setApprovalForAll(await certifiedResourceExchange.getAddress(), true);
       await certifiedResourceExchange.connect(seller).listResource(100, await hybridESGMultiToken.getAddress(), 1);
 
-      await expect(certifiedResourceExchange.connect(buyer).createOffer(1, 90, await hybridESGMultiToken.getAddress()))
+      await expect(certifiedResourceExchange.connect(buyer).createOffer(1, 90, await mockERC20.getAddress()))
         .to.emit(certifiedResourceExchange, "OfferCreated")
-        .withArgs(1, 1, buyer.address, 90, await hybridESGMultiToken.getAddress());
+        .withArgs(1, 1, buyer.address, 90, await mockERC20.getAddress());
     });
   });
 
   describe("Offer Acceptance", function () {
     it("Should allow the resource owner to accept an offer", async function () {
-      const { hybridESGMultiToken, certifiedResourceExchange, seller, buyer } = await loadFixture(deployMarketplaceFixture);
+      const { hybridESGMultiToken, certifiedResourceExchange, mockERC20, seller, buyer } = await loadFixture(deployMarketplaceFixture);
 
       await hybridESGMultiToken.safeTransferFrom(await hybridESGMultiToken.getAddress(), seller.address, 1, 1, "0x");
-      await hybridESGMultiToken.connect(seller).setApprovalForAll(await certifiedResourceExchange.getAddress(), true);
       await certifiedResourceExchange.connect(seller).listResource(100, await hybridESGMultiToken.getAddress(), 1);
-      await certifiedResourceExchange.connect(buyer).createOffer(1, 90, await hybridESGMultiToken.getAddress());
+      await certifiedResourceExchange.connect(buyer).createOffer(1, 90, await mockERC20.getAddress());
 
       // Mint some tokens for the buyer to pay with
-      await hybridESGMultiToken.createBatch(0, 100, "0x");
-      await hybridESGMultiToken.safeTransferFrom(await hybridESGMultiToken.getAddress(), buyer.address, 0, 100, "0x");
-      await hybridESGMultiToken.connect(buyer).setApprovalForAll(await certifiedResourceExchange.getAddress(), true);
+      await mockERC20.mint(buyer.address, 100);
+      await mockERC20.connect(buyer).approve(await certifiedResourceExchange.getAddress(), 90);
 
-      // Set allowance for the marketplace to transfer tokens on behalf of the buyer
-      await hybridESGMultiToken.connect(buyer).setApprovalForAll(await certifiedResourceExchange.getAddress(), true);
+      // Set approval for the marketplace to transfer ESG tokens on behalf of the seller
+      await hybridESGMultiToken.connect(seller).setApprovalForAll(await certifiedResourceExchange.getAddress(), true);
 
       await expect(certifiedResourceExchange.connect(seller).acceptOffer(1))
         .to.emit(certifiedResourceExchange, "OfferAccepted")

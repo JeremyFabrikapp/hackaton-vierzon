@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 
 contract CertifiedResourceExchange is ERC1155Holder, ReentrancyGuard, Pausable, Ownable {
     struct Resource {
@@ -14,13 +15,15 @@ contract CertifiedResourceExchange is ERC1155Holder, ReentrancyGuard, Pausable, 
         address esgToken;
         uint256 batchId;
         uint256 price;
-        address seller;
+        address payable seller;
+        address payable owner;
+        bool sold;
     }
 
     struct Offer {
         uint256 id;
         uint256 resourceId;
-        address bidder;
+        address payable bidder;
         uint256 amount;
         address paymentToken;
         bool isActive;
@@ -28,6 +31,7 @@ contract CertifiedResourceExchange is ERC1155Holder, ReentrancyGuard, Pausable, 
 
     uint256 private _nextResourceId = 1;
     uint256 private _nextOfferId = 1;
+    uint256 private _resourcesSold = 0;
 
     mapping(uint256 => Resource) public resources;
     mapping(uint256 => Offer) public offers;
@@ -47,7 +51,7 @@ contract CertifiedResourceExchange is ERC1155Holder, ReentrancyGuard, Pausable, 
         
         uint256 newResourceId = _nextResourceId++;
         
-        resources[newResourceId] = Resource(newResourceId, esgToken, batchId, price, msg.sender);
+        resources[newResourceId] = Resource(newResourceId, esgToken, batchId, price, payable(msg.sender), payable(address(0)), false);
         emit ResourceListed(newResourceId, esgToken, batchId, price, msg.sender);
     }
 
@@ -58,7 +62,7 @@ contract CertifiedResourceExchange is ERC1155Holder, ReentrancyGuard, Pausable, 
         
         uint256 newOfferId = _nextOfferId++;
         
-        offers[newOfferId] = Offer(newOfferId, resourceId, msg.sender, amount, paymentToken, true);
+        offers[newOfferId] = Offer(newOfferId, resourceId, payable(msg.sender), amount, paymentToken, true);
         resourceOffers[resourceId].push(newOfferId);
         
         emit OfferCreated(newOfferId, resourceId, msg.sender, amount, paymentToken);
@@ -82,9 +86,11 @@ contract CertifiedResourceExchange is ERC1155Holder, ReentrancyGuard, Pausable, 
         // Transfer ESG token
         IERC1155(resource.esgToken).safeTransferFrom(msg.sender, offer.bidder, resource.batchId, 1, "");
         
-        // Deactivate offer and remove resource
+        // Update resource and offer status
+        resource.owner = offer.bidder;
+        resource.sold = true;
         offer.isActive = false;
-        delete resources[offer.resourceId];
+        _resourcesSold++;
         
         emit OfferAccepted(offerId, offer.resourceId, msg.sender, offer.bidder);
         emit ResourceSold(offer.resourceId, offer.bidder, offer.amount);
@@ -109,6 +115,21 @@ contract CertifiedResourceExchange is ERC1155Holder, ReentrancyGuard, Pausable, 
 
     function getOffer(uint256 offerId) external view returns (Offer memory) {
         return offers[offerId];
+    }
+
+    function fetchMarketItems() public view returns (Resource[] memory) {
+        uint256 itemCount = _nextResourceId - 1;
+        uint256 unsoldItemCount = itemCount - _resourcesSold;
+        uint256 currentIndex = 0;
+
+        Resource[] memory items = new Resource[](unsoldItemCount);
+        for (uint256 i = 1; i <= itemCount; i++) {
+            if (resources[i].owner == address(0)) {
+                items[currentIndex] = resources[i];
+                currentIndex++;
+            }
+        }
+        return items;
     }
 
     function pause() external onlyOwner {
