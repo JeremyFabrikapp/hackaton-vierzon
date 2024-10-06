@@ -41,10 +41,10 @@ const config: HardhatUserConfig = {
         },
       },
     ],
-  }
-  // paths: {
-  //   sources: "./contracts/so-cash",
-  // },
+  },
+  paths: {
+    sources: "./contracts/so-cash",
+  },
 
 };
 

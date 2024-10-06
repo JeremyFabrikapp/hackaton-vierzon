@@ -7,8 +7,9 @@ import "@typechain/hardhat";
 import { task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import fs from "fs";
+import "@nomicfoundation/hardhat-ignition-ethers";
 
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
+// const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
 
 const chainIds = {
   ganache: 1337,
@@ -119,6 +120,7 @@ function createNetworkConfig(
 }
 
 const config: HardhatUserConfig | any = {
+  // solidity: "0.8.27",
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
@@ -169,9 +171,9 @@ const config: HardhatUserConfig | any = {
       },
     ],
   },
-  etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
-  },
+  // etherscan: {
+  //   apiKey: ETHERSCAN_API_KEY,
+  // },
   gasReporter: {
     currency: "USD",
     enabled: true,
@@ -184,21 +186,21 @@ const config: HardhatUserConfig | any = {
     outDir: "typechain",
     target: "ethers-v6",
   },
-  mocha: {
-    timeout: 100000000,
-  },
+  // mocha: {
+  //   timeout: 100000000,
+  // },
   
-  contractSizer: {
-    alphaSort: true,
-    disambiguatePaths: false,
-    runOnCompile: false,
-    strict: true,
-    only: [],
-  },
-  docgen: {
-    output: "docs",
-    pages: () => "api.md",
-  },
+  // contractSizer: {
+  //   alphaSort: true,
+  //   disambiguatePaths: false,
+  //   runOnCompile: false,
+  //   strict: true,
+  //   only: [],
+  // },
+  // docgen: {
+  //   output: "docs",
+  //   pages: () => "api.md",
+  // },
 };
 
 export default config;

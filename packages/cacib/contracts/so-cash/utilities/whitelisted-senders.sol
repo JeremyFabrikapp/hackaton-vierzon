@@ -7,7 +7,7 @@ import "../intf/whitelisted-senders.sol";
 
 abstract contract WhitelistedSenders is Ownable, IWhitelistedSenders {
     mapping(address => bool) private _whitelistedSenders;
-    constructor(address initialOwner) Ownable(initialOwner) {
+    constructor(address initialOwner) {
     }
 
     modifier onlyWhitelisted() {

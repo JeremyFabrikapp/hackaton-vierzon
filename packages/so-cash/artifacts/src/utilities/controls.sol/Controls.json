@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Controls",
+  "sourceName": "src/utilities/controls.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220444e3aa363112299034982b53c24f90f0a69e2a2ec8ac63ccd9fe9ed4957fc5964736f6c63430008110033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220444e3aa363112299034982b53c24f90f0a69e2a2ec8ac63ccd9fe9ed4957fc5964736f6c63430008110033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

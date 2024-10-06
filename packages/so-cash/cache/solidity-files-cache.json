@@ -1,0 +1,577 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/impl/so-cash-account-impl.sol": {
+      "lastModificationDate": 1728162115876,
+      "contentHash": "48fad37264433bb5ceb33b8058b1310b",
+      "sourceName": "src/impl/so-cash-account-impl.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../intf/so-cash-types.sol",
+        "../intf/so-cash-bank.sol",
+        "../intf/so-cash-account.sol",
+        "../utilities/whitelisted-senders.sol",
+        "../utilities/htlc-payments.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "SoCashAccount"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/intf/so-cash-types.sol": {
+      "lastModificationDate": 1728162115880,
+      "contentHash": "d8b8b0adb561153329a21b3414e708ed",
+      "sourceName": "src/intf/so-cash-types.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "ISoCashAccount",
+        "ISoCashBank"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/intf/so-cash-bank.sol": {
+      "lastModificationDate": 1728162115880,
+      "contentHash": "9bf096b1d80bf595e4ddedabacf9c3bb",
+      "sourceName": "src/intf/so-cash-bank.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./so-cash-types.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "IERC20Compatibility",
+        "ISoCashBankBackOffice",
+        "ISoCashBankExternal",
+        "ISoCashInterBank"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/intf/so-cash-account.sol": {
+      "lastModificationDate": 1728162115879,
+      "contentHash": "e267f887beffb853ca55e30adfc1d02f",
+      "sourceName": "src/intf/so-cash-account.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "../intf/whitelisted-senders.sol",
+        "../intf/htlc-payment.sol",
+        "../utilities/whitelisted-senders.sol",
+        "./so-cash-types.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ISoCashAccountFull",
+        "ISoCashOwnedAccount"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/utilities/whitelisted-senders.sol": {
+      "lastModificationDate": 1728162115882,
+      "contentHash": "398ec4731870512667dcebf6997fd5a0",
+      "sourceName": "src/utilities/whitelisted-senders.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "../intf/whitelisted-senders.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "WhitelistedSenders"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/utilities/htlc-payments.sol": {
+      "lastModificationDate": 1728162115882,
+      "contentHash": "40b1e8de3345a3822db97f8ae81fbbda",
+      "sourceName": "src/utilities/htlc-payments.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../intf/htlc-payment.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "HTLCPaymentCapacity"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/intf/htlc-payment.sol": {
+      "lastModificationDate": 1728162115879,
+      "contentHash": "ee26944090dd1021f2e9870cd5defa58",
+      "sourceName": "src/intf/htlc-payment.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./so-cash-types.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "IHTLCPayment"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/intf/whitelisted-senders.sol": {
+      "lastModificationDate": 1728162115881,
+      "contentHash": "6584875d5f05b390077dcd6b48e93775",
+      "sourceName": "src/intf/whitelisted-senders.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "IOwnable",
+        "IWhitelistedSenders"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/utilities/controls.sol": {
+      "lastModificationDate": 1728162115882,
+      "contentHash": "4bc804af9067c672e04bd517a1f2cd1d",
+      "sourceName": "src/utilities/controls.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "../intf/so-cash-types.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Controls"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/impl/so-cash-bank-impl.sol": {
+      "lastModificationDate": 1728162115877,
+      "contentHash": "827799205ebb9798be60d81ff36da6ad",
+      "sourceName": "src/impl/so-cash-bank-impl.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../intf/so-cash-types.sol",
+        "../intf/so-cash-bank.sol",
+        "../intf/so-cash-account.sol",
+        "../utilities/controls.sol",
+        "../utilities/whitelisted-senders.sol",
+        "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+        "../utilities/IBAN.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "SoCashBank"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/packages/so-cash/src/utilities/IBAN.sol": {
+      "lastModificationDate": 1728162115881,
+      "contentHash": "561508f87706b2b57423611cdf5a943c",
+      "sourceName": "src/utilities/IBAN.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 2000
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "IBANCalculator"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1728200176862,
+      "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1728200176773,
+      "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1728200176707,
+      "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "/Users/jeremy/Documents/dev/Hackatons/vierzon/greenvest/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1728200176683,
+      "contentHash": "f07feb4a44b1a4872370da5aa70e8e46",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    }
+  }
+}
