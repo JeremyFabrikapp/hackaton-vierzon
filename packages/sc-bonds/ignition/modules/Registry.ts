@@ -2,23 +2,53 @@
 // Learn more about it at https://hardhat.org/ignition
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
+import { ethers } from "ethers";
 
 const RegistryModule = buildModule("RegistryModule", (m) => {
   // Deploy the Registry contract
   const deployer = m.getAccount(0);
 
+  // Sample data generation
+  const generateSampleBondData = () => {
+    const now = Math.floor(Date.now() / 1000);
+    const oneDay = 86400;
+    const oneYear = 31536000;
+
+    return {
+      bondName: "Green Energy Bond 2024",
+      isin: "US123456AB12",
+      expectedSupply: 10000000,
+      currency: ethers.encodeBytes32String("USD"),
+      unitVal: 1000,
+      couponRate: 375, // 3.75%
+      creationDate: now,
+      issuanceDate: now + oneDay * 7, // 1 week from now
+      maturityDate: now + oneYear * 5, // 5 years from now
+      couponDates: [
+        now + oneYear,
+        now + oneYear * 2,
+        now + oneYear * 3,
+        now + oneYear * 4,
+        now + oneYear * 5
+      ],
+      cutoffTime: 7200 // 2 hours
+    };
+  };
+
+  const bondData = generateSampleBondData();
+
   const registry = m.contract("Register", [
-    "BondName",
-    "ISIN123456",
-    1000000, // expectedSupply
-    m.getParameter("currency", "0x4555520000000000000000000000000000000000000000000000000000000000"), // EUR in bytes32
-    100, // unitVal
-    5, // couponRate (5%)
-    Math.floor(Date.now() / 1000), // creationDate (current timestamp)
-    Math.floor(Date.now() / 1000) + 86400, // issuanceDate (1 day from now)
-    Math.floor(Date.now() / 1000) + 31536000, // maturityDate (1 year from now)
-    [], // couponDates (empty array for now)
-    3600 // cutofftime (1 hour)
+    bondData.bondName,
+    bondData.isin,
+    bondData.expectedSupply,
+    bondData.currency,
+    bondData.unitVal,
+    bondData.couponRate,
+    bondData.creationDate,
+    bondData.issuanceDate,
+    bondData.maturityDate,
+    bondData.couponDates,
+    bondData.cutoffTime
   ]);
 
   return { registry };
