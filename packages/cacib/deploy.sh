@@ -1,0 +1,1 @@
+hh ignition deploy ./ignition/modules/Bank.ts --network "localhost" --reset
