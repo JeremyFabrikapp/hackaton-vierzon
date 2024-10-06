@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import HybridESGMultiTokenABI from '../artifacts/core/artifacts/contracts/HybridESGMultiToken.sol/HybridESGMultiToken.json'; // Ensure this ABI file exists
 import { useAccount } from 'wagmi';
 
-const contractAddress = '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318'; // Replace with the actual deployed contract address
+const contractAddress = '0x0E801D84Fa97b50751Dbf25036d067dCf18858bF';
 const expectedChainId = 31337; // Hardhat's default chainId
 
 export function useESGTokenContracts() {

@@ -13,6 +13,33 @@ const BondDetailsPage = () => {
   const [couponRate, setCouponRate] = useState<number | null>(null)
   const [unitValue, setUnitValue] = useState<number | null>(null)
   const [investors, setInvestors] = useState<string[]>([])
+  const [coupons, setCoupons] = useState<any[]>([])
+
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      if (bondData) {
+        const issueDate = new Date(bondData.issueDate)
+        const maturityDate = new Date(bondData.maturityDate)
+        const couponFrequency = Number(bondData.couponFrequency)
+        const couponRate = Number(bondData.couponRate) / 100 // Convert to decimal
+
+        let currentDate = new Date(issueDate)
+        const couponsData = []
+
+        while (currentDate <= maturityDate) {
+          couponsData.push({
+            date: new Date(currentDate),
+            amount: (Number(bondData.unitValue) * couponRate) / couponFrequency
+          })
+          currentDate.setMonth(currentDate.getMonth() + (12 / couponFrequency))
+        }
+
+        setCoupons(couponsData)
+      }
+    }
+
+    fetchCoupons()
+  }, [])
 
   useEffect(() => {
     const fetchBondDetails = async () => {
@@ -102,6 +129,31 @@ const BondDetailsPage = () => {
           </div>
         ) : (
           <p className="text-gray-600 italic">No investors found.</p>
+        )}
+      </div>
+      <div className="mt-8 bg-white shadow-lg rounded-xl p-6 transition-all duration-300 hover:shadow-xl">
+        <h2 className="text-2xl font-semibold mb-6 text-indigo-600">Coupons</h2>
+        {coupons.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="px-4 py-2">Date</th>
+                  <th className="px-4 py-2">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {coupons.map((coupon, index) => (
+                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
+                    <td className="border px-4 py-2">{coupon.date}</td>
+                    <td className="border px-4 py-2">{coupon.amount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-gray-600 italic">No coupons found.</p>
         )}
       </div>
     </div>

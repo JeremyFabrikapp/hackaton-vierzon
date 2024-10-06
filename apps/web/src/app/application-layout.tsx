@@ -102,7 +102,7 @@ export function ApplicationLayout({
             <Dropdown>
               <DropdownButton as={SidebarItem}>
                 <Avatar src="/teams/catalyst.svg" />
-                <SidebarLabel>Catalyst</SidebarLabel>
+                <SidebarLabel>Greenvest</SidebarLabel>
                 <ChevronDownIcon />
               </DropdownButton>
               <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
@@ -114,7 +114,7 @@ export function ApplicationLayout({
                 <DropdownDivider />
                 <DropdownItem href="#">
                   <Avatar slot="icon" src="/teams/catalyst.svg" />
-                  <DropdownLabel>Catalyst</DropdownLabel>
+                  <DropdownLabel>Greenvest</DropdownLabel>
                 </DropdownItem>
                 <DropdownItem href="#">
                   <Avatar slot="icon" initials="BE" className="bg-purple-500 text-white" />
@@ -135,10 +135,10 @@ export function ApplicationLayout({
                 <HomeIcon />
                 <SidebarLabel>Home</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/events" current={pathname.startsWith('/events')}>
+              {/* <SidebarItem href="/events" current={pathname.startsWith('/events')}>
                 <Square2StackIcon />
                 <SidebarLabel>Events</SidebarLabel>
-              </SidebarItem>
+              </SidebarItem> */}
               <SidebarItem href="/orders" current={pathname.startsWith('/orders')}>
                 <TicketIcon />
                 <SidebarLabel>Orders</SidebarLabel>
@@ -161,14 +161,14 @@ export function ApplicationLayout({
               </SidebarItem>
             </SidebarSection>
 
-            <SidebarSection className="max-lg:hidden">
+            {/* <SidebarSection className="max-lg:hidden">
               <SidebarHeading>Upcoming Events</SidebarHeading>
               {events.map((event) => (
                 <SidebarItem key={event.id} href={event.url}>
                   {event.name}
                 </SidebarItem>
               ))}
-            </SidebarSection>
+            </SidebarSection> */}
 
             <SidebarSpacer />
             <SidebarSection>

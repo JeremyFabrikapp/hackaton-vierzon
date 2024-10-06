@@ -37,6 +37,7 @@ const InventoryTable = ({ inventory }: { inventory: InventoryItem[] }) => (
           <th scope="col" className="px-6 py-3">Social</th>
           <th scope="col" className="px-6 py-3">Governance</th>
           <th scope="col" className="px-6 py-3">ESG Score</th>
+          <th scope="col" className="px-6 py-3">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -65,6 +66,17 @@ const InventoryTable = ({ inventory }: { inventory: InventoryItem[] }) => (
                 <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                   {esgScore.toFixed(2)}
                 </span>
+              </td>
+              <td className="px-6 py-4">
+                {esgScore > 50 ? (
+                  <Button onClick={() => console.log(`Put batch ${item.batchId} on sale`)}>
+                    Put on Sale
+                  </Button>
+                ) : (
+                  <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                    Non Valid
+                  </span>
+                )}
               </td>
             </tr>
           );
