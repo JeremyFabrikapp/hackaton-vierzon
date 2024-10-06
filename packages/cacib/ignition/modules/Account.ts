@@ -1,8 +1,7 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
-import { BytesLike, ethers } from "ethers";
-import { ArgumentType } from "hardhat/types";
+import { ethers } from "ethers";
 
-const BankModule = buildModule("BankModule", (m) => {
+const AccountModule = buildModule("AccountModule", (m) => {
     const soCashBankImpl = m.contract("SoCashBank", [
         // Buffer.from("AGRIFRPPXXX") as unknown as ArgumentType<BytesLike>,
         ethers.encodeBytes32String("AGRIFRPPXXX").slice(0, 24), // _bic (BIC for Credit Agricole)
@@ -12,19 +11,18 @@ const BankModule = buildModule("BankModule", (m) => {
         ethers.encodeBytes32String("EUR").slice(0, 8), // _ccy
         2 // _decimals (Euro typically has 2 decimal places)
     ]);
+    const soCashAccountImpl = m.contract("SoCashAccount", [
+        "Default Account" // name_ parameter for the constructor
+    ]);
 
-    // return { soCashBankImpl }
-    // Set up IBAN calculator
-    const ibanCalculator = m.contract("IBANCalculator");
+    // Whitelist the bank for the account
+    m.call(soCashAccountImpl, "whitelist", [soCashBankImpl], { id: "whitelist" });
 
-    // Set IBAN calculator on bank
-    m.call(soCashBankImpl, "setIBANCalculator", [ibanCalculator]);
-
-    // Whitelist deployer
+    // Whitelist deployer for the account
     const deployer = m.getAccount(0);
-    m.call(soCashBankImpl, "whitelist", [deployer]);
+    m.call(soCashAccountImpl, "whitelist", [deployer], { id: "whitelist2" });
 
-    return { soCashBankImpl, ibanCalculator };
+    return { soCashAccountImpl };
 });
 
-export default BankModule;
+export default AccountModule;

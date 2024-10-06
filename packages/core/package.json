@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
-    "ft-diamond-base":"*"
+    "green-so-bond":"*"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
