@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 // SATURN project (last updated v0.1.0)
 
-pragma solidity 0.8.17;
+pragma solidity ^0.8.20;
 
 import "./intf/IRegister.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Arrays.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+// import "@openzeppelin/contracts/utils/Counters.sol";
 
 
 contract RegisterRoleManagement is AccessControl, IRegisterRoleManagement {
@@ -29,10 +29,10 @@ contract RegisterRoleManagement is AccessControl, IRegisterRoleManagement {
     bytes32 public constant PAY_ROLE = keccak256("PAY_ROLE"); //Paying agent role
 
     constructor() {
-      _setupRole(DEFAULT_ADMIN_ROLE, msg.sender); // contract deployer is DEFAULT_ADMIN_ROLE: AccessControl.sol magic: all roles can be administrated by the user having the DEFAULT_ADMIN_ROLE
+      _grantRole(DEFAULT_ADMIN_ROLE, msg.sender); // contract deployer is DEFAULT_ADMIN_ROLE: AccessControl.sol magic: all roles can be administrated by the user having the DEFAULT_ADMIN_ROLE
       _setRoleAdmin(CAK_ROLE, CAK_ROLE); // BND_ROLE admin is CAK_ROLE
       registerAdmin = msg.sender; // We want a single admin for the register than can be changed by 2 CAK
-      _setupRole(CAK_ROLE, msg.sender); // contract deployer is CAK_ROLE
+      _grantRole(CAK_ROLE, msg.sender); // contract deployer is CAK_ROLE
       _setRoleAdmin(BND_ROLE, CAK_ROLE); // BND_ROLE admin is CAK_ROLE
       _setRoleAdmin(CST_ROLE, CAK_ROLE); // CST_ROLE admin is CAK_ROLE
       _setRoleAdmin(PAY_ROLE, CAK_ROLE); // PAY_ROLE admin is CAK_ROLE
@@ -96,7 +96,7 @@ contract RegisterRoleManagement is AccessControl, IRegisterRoleManagement {
                 );
                 // All good, execute the change
                 _revokeRole(DEFAULT_ADMIN_ROLE, registerAdmin); // remove previous admin
-                _setupRole(DEFAULT_ADMIN_ROLE, _addressForNewAdmin); // set new admin
+                _grantRole(DEFAULT_ADMIN_ROLE, _addressForNewAdmin); // set new admin
                 registerAdmin = _addressForNewAdmin;
                 // and reset the state
                 _votesForNewAdmin = 0;

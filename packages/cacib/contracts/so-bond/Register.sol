@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // SATURN project (last updated v0.1.0)
 
-pragma solidity 0.8.17;
+pragma solidity ^0.8.20;
 
 import "./intf/IRegister.sol";
 import "./RegisterRoleManagement.sol";
@@ -10,7 +10,7 @@ import "./SmartContractAccessManagement.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Arrays.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+// import "@openzeppelin/contracts/utils/Counters.sol";
 // import "@openzeppelin/contracts/utils/Strings.sol";
 /**
  * @dev This contract is based on ERC20 standard

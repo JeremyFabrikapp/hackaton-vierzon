@@ -22,6 +22,27 @@ const AccountModule = buildModule("AccountModule", (m) => {
     const deployer = m.getAccount(0);
     m.call(soCashAccountImpl, "whitelist", [deployer], { id: "whitelist2" });
 
+    // Register the account with the bank
+    // m.call(soCashBankImpl, "registerAccount", [soCashAccountImpl], { id: "registerAccount" });
+
+    // Credit the account with 1000 EUR (100000 cents)
+    const creditAmount = ethers.parseUnits("1000", 2); // 1000 EUR with 2 decimal places
+    m.call(soCashBankImpl, "credit", [soCashAccountImpl, creditAmount, "Initial credit"], { id: "creditAccount" });
+    // return
+    // Check the balance of the account
+    const balance = m.staticCall(soCashBankImpl, "balanceOf", [soCashAccountImpl]);
+
+    // Debit 500 EUR from the account
+    const debitAmount = ethers.parseUnits("500", 2); // 500 EUR with 2 decimal places
+    m.call(soCashBankImpl, "debit", [soCashAccountImpl, debitAmount, "Test debit"], { id: "debitAccount" });
+
+    // Check the balance again after debit
+    const balanceAfterDebit = m.staticCall(soCashBankImpl, "balanceOf", [soCashAccountImpl], undefined, { id: "debitAccountBalan" });
+
+    // Log the balance after debit
+    // console.log("Account balance after debit", balanceAfterDebit);
+    // // Log the balance (this will be visible in the Ignition deployment output)
+    // console.log("Account balance", balance);
     return { soCashAccountImpl };
 });
 

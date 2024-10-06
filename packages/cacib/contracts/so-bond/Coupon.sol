@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.5.0) (token/ERC20/ERC20.sol)
 
-pragma solidity 0.8.17;
+pragma solidity ^0.8.20;
 
 import "./intf/IRegister.sol";
 import "./intf/ICoupon.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract Coupon is ReentrancyGuard {
     enum CouponStatus {

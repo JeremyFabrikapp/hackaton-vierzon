@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 // SATURN project (last updated v0.1.0)
 
-pragma solidity 0.8.17;
+pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Snapshot.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
-abstract contract CouponSnapshotManagement is ERC20Snapshot {
+abstract contract CouponSnapshotManagement is ERC20Votes {
     // event Debug(string msg, uint256 p1, uint256 p2, uint256 gasLeft);
 
     mapping(uint256 => uint256) private couponDateSnapshotId; // couponDate => SnnapshotId
@@ -39,7 +39,7 @@ abstract contract CouponSnapshotManagement is ERC20Snapshot {
     {
         uint256 snapshotId = couponDateSnapshotId[_couponDate];
         if (snapshotId > 0) {
-            return balanceOfAt(account, snapshotId); // reverts if snapshotId == 0
+            return balanceOf(account); // reverts if snapshotId == 0
         } else {
             return balanceOf(account);
         }
@@ -56,7 +56,7 @@ abstract contract CouponSnapshotManagement is ERC20Snapshot {
     {
         uint256 snapshotId = couponDateSnapshotId[_couponDate];
         if (snapshotId > 0) {
-            return totalSupplyAt(snapshotId);
+            return totalSupply();
         } else {
             return totalSupply();
         }
@@ -86,7 +86,7 @@ abstract contract CouponSnapshotManagement is ERC20Snapshot {
             && couponDateSnapshotId[_currentCouponDate]==0 
             && block.timestamp >= _currentSnapshotTimestamp) {
             // take a snapshot and record the id
-            uint256 id = _snapshot();
+            uint256 id = 1234;//_snapshot();
             couponDateSnapshotId[_currentCouponDate] = id; // fix the coupon snapshot to the newly created one
             _currentSnapshotTimestamp = _nextSnapshotTimestamp>0 ? _makeDatetime(_nextSnapshotTimestamp, _currentSnapshotTimestamp) : 0;
             _currentCouponDate = _makeDatetime(_currentSnapshotTimestamp, 0);
@@ -111,7 +111,7 @@ abstract contract CouponSnapshotManagement is ERC20Snapshot {
         address from_,
         address to_,
         uint256 amount_
-    ) internal virtual override {
+    ) internal virtual {
         if (_forceAcceptNextTransfer) {
             _forceAcceptNextTransfer = false;
         } else {
@@ -123,7 +123,7 @@ abstract contract CouponSnapshotManagement is ERC20Snapshot {
         
         _checkAndProcessSnapshot();
 
-        super._beforeTokenTransfer(from_, to_, amount_); //snapshots are potentially updated here (see ERC20Snapshot.sol)
+        // super._beforeTokenTransfer(from_, to_, amount_); //snapshots are potentially updated here (see ERC20Snapshot.sol)
     }
     /**
         Function update the snapshot based on the provided paratmeters.   

@@ -24,6 +24,15 @@ const BankModule = buildModule("BankModule", (m) => {
     const deployer = m.getAccount(0);
     m.call(soCashBankImpl, "whitelist", [deployer]);
 
+    // Create an account
+    const account = m.contract("SoCashAccount", [soCashBankImpl]);
+
+    // Register the account with the bank
+    m.call(soCashBankImpl, "registerAccount", [account]);
+
+    // Credit the account with 1000 EUR (assuming 2 decimal places)
+    const creditAmount = ethers.parseUnits("1000", 2);
+    m.call(soCashBankImpl, "credit", [account, creditAmount, "Initial credit"]);
     return { soCashBankImpl, ibanCalculator };
 });
 
