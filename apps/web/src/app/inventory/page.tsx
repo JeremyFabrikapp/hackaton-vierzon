@@ -26,65 +26,145 @@ interface InventoryItem {
   };
 }
 
-const InventoryTable = ({ inventory }: { inventory: InventoryItem[] }) => (
-  <div className="overflow-x-auto shadow-md rounded-lg">
-    <table className="w-full text-sm text-left text-gray-500">
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-        <tr>
-          <th scope="col" className="px-6 py-3">Batch ID</th>
-          <th scope="col" className="px-6 py-3">Balance</th>
-          <th scope="col" className="px-6 py-3">Environmental</th>
-          <th scope="col" className="px-6 py-3">Social</th>
-          <th scope="col" className="px-6 py-3">Governance</th>
-          <th scope="col" className="px-6 py-3">ESG Score</th>
-          <th scope="col" className="px-6 py-3">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {inventory.map((item, index) => {
-          const esgScore = (item.esgCriteria.environmental + item.esgCriteria.social + item.esgCriteria.governance) / 3;
-          return (
-            <tr key={item.batchId} className="bg-white border-b hover:bg-gray-50">
-              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{item.batchId}</td>
-              <td className="px-6 py-4">{item.balance}</td>
-              <td className="px-6 py-4">
-                <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  {item.esgCriteria.environmental}
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  {item.esgCriteria.social}
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  {item.esgCriteria.governance}
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                  {esgScore.toFixed(2)}
-                </span>
-              </td>
-              <td className="px-6 py-4">
-                {esgScore > 50 ? (
-                  <Button onClick={() => console.log(`Put batch ${item.batchId} on sale`)}>
-                    Put on Sale
-                  </Button>
-                ) : (
-                  <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                    Non Valid
-                  </span>
-                )}
-              </td>
+interface SaleModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  batchId: number;
+  onConfirm: (batchId: number, price: string) => void;
+}
+
+const SaleModal = ({ isOpen, onClose, batchId, onConfirm }: SaleModalProps) => {
+  const [price, setPrice] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onConfirm(batchId, price);
+    onClose();
+  };
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <h2 className="mb-4 text-xl font-bold">Put Batch {batchId} on Sale</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+            Price
+          </label>
+          <Input
+            id="price"
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="mt-1"
+            required
+          />
+        </div>
+        <div className="flex justify-end space-x-2">
+          <Button onClick={onClose}>Cancel</Button>
+          <Button type="submit">Confirm</Button>
+        </div>
+      </form>
+    </Modal>
+  );
+};
+
+const InventoryTable = ({ inventory }: { inventory: InventoryItem[] }) => {
+  const [saleModalOpen, setSaleModalOpen] = useState(false);
+  const [selectedBatchId, setSelectedBatchId] = useState<number | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const openSaleModal = (batchId: number) => {
+    setSelectedBatchId(batchId);
+    setSaleModalOpen(true);
+  };
+
+  const closeSaleModal = () => {
+    setSaleModalOpen(false);
+    setSelectedBatchId(null);
+  };
+
+  const handleSaleConfirm = (batchId: number, price: string) => {
+    console.log(`Put batch ${batchId} on sale for ${price}`);
+    // Here you would typically call a function to actually put the batch on sale
+    setSuccessMessage(`Batch ${batchId} has been put on sale for ${price}`);
+    setTimeout(() => setSuccessMessage(null), 5000); // Clear message after 5 seconds
+  };
+
+  return (
+    <>
+      {successMessage && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <span className="block sm:inline">{successMessage}</span>
+        </div>
+      )}
+      <div className="overflow-x-auto shadow-md rounded-lg">
+        <table className="w-full text-sm text-left text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+              <th scope="col" className="px-6 py-3">Batch ID</th>
+              <th scope="col" className="px-6 py-3">Balance</th>
+              <th scope="col" className="px-6 py-3">Environmental</th>
+              <th scope="col" className="px-6 py-3">Social</th>
+              <th scope="col" className="px-6 py-3">Governance</th>
+              <th scope="col" className="px-6 py-3">ESG Score</th>
+              <th scope="col" className="px-6 py-3">Action</th>
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  </div>
-)
+          </thead>
+          <tbody>
+            {inventory.map((item, index) => {
+              const esgScore = (item.esgCriteria.environmental + item.esgCriteria.social + item.esgCriteria.governance) / 3;
+              return (
+                <tr key={item.batchId} className="bg-white border-b hover:bg-gray-50">
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{item.batchId}</td>
+                  <td className="px-6 py-4">{item.balance}</td>
+                  <td className="px-6 py-4">
+                    <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {item.esgCriteria.environmental}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {item.esgCriteria.social}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {item.esgCriteria.governance}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {esgScore.toFixed(2)}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    {esgScore > 50 ? (
+                      <Button onClick={() => openSaleModal(item.batchId)}>
+                        Put on Sale
+                      </Button>
+                    ) : (
+                      <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        Non Valid
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {selectedBatchId !== null && (
+        <SaleModal
+          isOpen={saleModalOpen}
+          onClose={closeSaleModal}
+          batchId={selectedBatchId}
+          onConfirm={handleSaleConfirm}
+        />
+      )}
+    </>
+  );
+};
 
 interface AddResourceModalProps {
   isOpen: boolean

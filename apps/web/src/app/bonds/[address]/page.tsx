@@ -14,6 +14,7 @@ const BondDetailsPage = () => {
   const [unitValue, setUnitValue] = useState<number | null>(null)
   const [investors, setInvestors] = useState<string[]>([])
   const [coupons, setCoupons] = useState<any[]>([])
+  const [esgData, setEsgData] = useState<any[]>([])
 
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -50,8 +51,6 @@ const BondDetailsPage = () => {
           isin: data[1],
           totalSupply: data[2].toString(),
           unitValue: ethers.decodeBytes32String(data[3]),
-        //   unitValue: ethers.formatUnits(data[3], 18),
-
           couponRate: data[4].toString(),
           couponFrequency: data[5].toString(),
           issueDate: new Date(Number(data[6]) * 1000).toISOString().split('T')[0],
@@ -65,6 +64,14 @@ const BondDetailsPage = () => {
       setUnitValue(value ? Number(value) : null)
       const investorList = await getInvestorListAtCoupon(Math.floor(Date.now() / 1000))
       setInvestors(investorList || [])
+
+      // Mock ESG data
+      setEsgData([
+        { date: '2023-01-01', rating: 'A-', score: 75 },
+        { date: '2023-04-01', rating: 'A', score: 82 },
+        { date: '2023-07-01', rating: 'A+', score: 88 },
+        { date: '2023-10-01', rating: 'AA-', score: 91 },
+      ])
     }
 
     fetchBondDetails()
@@ -73,6 +80,19 @@ const BondDetailsPage = () => {
   if (!address || typeof address !== 'string') {
     return <div>No address</div>
   }
+
+  // Mock data for investors and coupons if empty
+  const mockInvestors = [
+    '0x1234567890123456789012345678901234567890',
+    '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
+    '0x9876543210987654321098765432109876543210'
+  ]
+
+  const mockCoupons = [
+    { date: new Date('2024-01-01'), amount: 50 },
+    { date: new Date('2024-07-01'), amount: 50 },
+    { date: new Date('2025-01-01'), amount: 50 }
+  ]
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -89,9 +109,13 @@ const BondDetailsPage = () => {
               {Object.entries(bondData).map(([key, value]) => (
                 <div key={key} className="mb-4">
                   <p className="text-sm font-semibold text-gray-700 mb-1">{key.replace(/([A-Z])/g, ' $1').trim()}:</p>
-                  <p className="text-lg text-gray-900">{value}</p>
+                  <p className="text-lg text-gray-900">{value as React.ReactNode}</p>
                 </div>
               ))}
+                <div key="l-reimbursm" className="mb-4">
+                  <p className="text-sm font-semibold text-gray-700 mb-1">Latest reimbursement:</p>
+                  <p className="text-lg text-gray-900">2024-11-15</p>
+                </div>
             </div>
           )}
         </div>
@@ -128,7 +152,16 @@ const BondDetailsPage = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-600 italic">No investors found.</p>
+          <>
+            <p className="text-gray-600 italic mb-4">No investors found. Displaying mock data:</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {mockInvestors.map((investor, index) => (
+                <div key={index} className="bg-gray-100 rounded-lg p-3 transition-all duration-300 hover:bg-gray-200">
+                  <p className="font-mono text-sm break-all">{investor}</p>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
       <div className="mt-8 bg-white shadow-lg rounded-xl p-6 transition-all duration-300 hover:shadow-xl">
@@ -145,15 +178,62 @@ const BondDetailsPage = () => {
               <tbody>
                 {coupons.map((coupon, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
-                    <td className="border px-4 py-2">{coupon.date}</td>
-                    <td className="border px-4 py-2">{coupon.amount}</td>
+                    <td className="border px-4 py-2">{coupon.date.toISOString().split('T')[0]}</td>
+                    <td className="border px-4 py-2">{coupon.amount.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : (
-          <p className="text-gray-600 italic">No coupons found.</p>
+          <>
+            <p className="text-gray-600 italic mb-4">No coupons found. Displaying mock data:</p>
+            <div className="overflow-x-auto">
+              <table className="min-w-full table-auto">
+                <thead>
+                  <tr className="bg-gray-200">
+                    <th className="px-4 py-2">Date</th>
+                    <th className="px-4 py-2">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mockCoupons.map((coupon, index) => (
+                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
+                      <td className="border px-4 py-2">{coupon.date.toISOString().split('T')[0]}</td>
+                      <td className="border px-4 py-2">{coupon.amount.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </div>
+      <div className="mt-8 bg-white shadow-lg rounded-xl p-6 transition-all duration-300 hover:shadow-xl">
+        <h2 className="text-2xl font-semibold mb-6 text-indigo-600">ESG Data</h2>
+        {esgData.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="px-4 py-2">Date</th>
+                  <th className="px-4 py-2">Rating</th>
+                  <th className="px-4 py-2">Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {esgData.map((audit, index) => (
+                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
+                    <td className="border px-4 py-2">{audit.date}</td>
+                    <td className="border px-4 py-2">{audit.rating}</td>
+                    <td className="border px-4 py-2">{audit.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-gray-600 italic">No ESG data found.</p>
         )}
       </div>
     </div>

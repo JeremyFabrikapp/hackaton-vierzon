@@ -105,7 +105,7 @@ export function useESGTokenContracts() {
     };
 
     const serializeESGCriteria = (criteria: any) => {
-        console.log('Serializing ESG criteria:', criteria);
+        // console.log('Serializing ESG criteria:', criteria);
         if (!criteria || typeof criteria !== 'object') return null;
         return {
             environmental: criteria.environmental ? Number(criteria.environmental.toString()) : 0,
@@ -134,7 +134,13 @@ export function useESGTokenContracts() {
             const balance = await contract.balanceOf(address, batchId);
             const uri = await contract.uri(batchId);
             const esgCriteria = await getBatchESGCriteria(batchId);
+            console.log('Token info for batch', batchId, ':', {
+                balance: balance.toString(),
+                uri,
+                esgCriteria
+            });
 
+            
             return {
                 batchId: Number(batchId.toString()),
                 balance: balance.toString(),

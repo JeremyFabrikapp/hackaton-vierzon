@@ -139,14 +139,14 @@ export function ApplicationLayout({
                 <Square2StackIcon />
                 <SidebarLabel>Events</SidebarLabel>
               </SidebarItem> */}
-              <SidebarItem href="/orders" current={pathname.startsWith('/orders')}>
+              {/* <SidebarItem href="/orders" current={pathname.startsWith('/orders')}>
                 <TicketIcon />
                 <SidebarLabel>Orders</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/settings" current={pathname.startsWith('/settings')}>
                 <Cog6ToothIcon />
                 <SidebarLabel>Settings</SidebarLabel>
-              </SidebarItem>
+              </SidebarItem> */}
               <SidebarItem href="/inventory" current={pathname.startsWith('/inventory')}>
                 <ArchiveBoxIcon />
                 <SidebarLabel>Inventory</SidebarLabel>

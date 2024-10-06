@@ -15,9 +15,9 @@ const RegistryModule = buildModule("RegistryModule", (m) => {
     const oneYear = 31536000;
 
     return {
-      bondName: "Green Energy Bond 2024",
-      isin: "US123456AB12",
-      expectedSupply: 10000000,
+      bondName: `${Math.random().toString(36).substring(7)} Bond ${new Date().getFullYear() + 1}`,
+      isin: `${Math.random().toString(36).substring(2, 4).toUpperCase()}${Math.random().toString(36).substring(2, 10).toUpperCase()}${Math.random().toString(36).substring(2, 4).toUpperCase()}`,
+      expectedSupply: Math.floor(Math.random() * 90000000) + 10000000,
       currency: ethers.encodeBytes32String("USD"),
       unitVal: 1000,
       couponRate: 375, // 3.75%
